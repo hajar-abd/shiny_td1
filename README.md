@@ -1,7 +1,3 @@
-# shiny_td1
+# TD 1 - Printing records according to a filter
 
-read patient.csv
-
-list of colors in a dropdownlist to customize a barplot of the number of patients per sex
-
-list of city in a dropdownlist to display a dataframe with the patient of the city and print the number of patient
+The objective of the td1 is to discover the componant *selectInput* and *tableOutput* in order to filter records according to a modality selected by the user, and print the resulting table.
