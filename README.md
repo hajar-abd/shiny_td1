@@ -4,4 +4,4 @@ The objective of the td1 is to discover the componant *selectInput* and *tableOu
 
 ### Results
 
-![](images/td1.png "results")
+![]() <img src="images/td1.png"  width="500">
