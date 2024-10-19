@@ -12,12 +12,19 @@
 # ----------------------------------------------------------------------------
 library(shiny)
 library(dplyr)
+library(lubridate)
 
 # Load data 
 # ----------------------------------------------------------------------------
 
-# load hospital_stay.csv and hospital.csv
-# print the structure (str) in the terminal
+hospital_stay_raw <- read.csv2("data/hospital_stay.csv")
+hospital_raw <- read.csv2("data/hospital.csv")
+str(hospital_stay_raw) 
+
+hospital_stay = hospital_stay_raw %>%
+  merge(hospital_raw, by = "hospital_id") %>%
+  mutate(admission_date = as.character(ymd(admission_date)), 
+       discharge_date = as.character(ymd(discharge_date)))
 
 # User Interface
 # ----------------------------------------------------------------------------
@@ -31,16 +38,19 @@ ui <- fluidPage(
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
-            # insert a selectInput component printing the hospitals labels
-            # the id of the componant is "select_hospital"
-            )
-        ),
+          selectInput(
+            inputId = "select_hospital",
+            "Unit",
+            choices = c(hospital_raw$hospital)
+          )
+            ),
 
         # Show a plot of the generated distribution
         mainPanel(
-            # insert a tableOutput compponant with the id "selected_hospital_stay"
+            tableOutput("selected_hospital_stay")
         )
     )
+)
 
 # Server
 # ----------------------------------------------------------------------------
@@ -49,12 +59,11 @@ ui <- fluidPage(
 server <- function(input, output) {
 
     output$selected_hospital_stay <- renderTable({
+      hospital_stay %>%
+        filter(hospital == input$select_hospital) %>% 
+        select(hospital_id, admission_date, discharge_date, hospital) 
         
-        #filter the hospital stay according to the hospital label selected in the interface
-        # select the fields "hospital_stay_id", "admission_date", "discharge_date", "hospital"
-        # return the data frame
-        
-        return(df)
+
 
     })
 }
